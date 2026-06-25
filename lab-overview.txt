@@ -1,259 +1,144 @@
-{
-  "annotations": { "list": [] },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 1,
-  "id": null,
-  "links": [
-    {
-      "icon": "compass",
-      "tags": [],
-      "targetBlank": false,
-      "title": "Explore (Tempo)",
-      "type": "link",
-      "url": "/explore?orgId=1&left=%7B%22datasource%22:%22tempo%22,%22queries%22:%5B%7B%22refId%22:%22A%22,%22queryType%22:%22traceqlSearch%22,%22limit%22:20%7D%5D,%22range%22:%7B%22from%22:%22now-1h%22,%22to%22:%22now%22%7D%7D"
-    },
-    {
-      "icon": "external link",
-      "tags": [],
-      "targetBlank": true,
-      "title": "Coroot",
-      "type": "link",
-      "url": "http://localhost:8082"
-    }
-  ],
-  "panels": [
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
-      "id": 100,
-      "panels": [],
-      "title": "Xizmat xaritasi (Node Graph)",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 1 },
-      "id": 20,
-      "options": {},
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "queryType": "serviceMap",
-          "refId": "A"
-        }
-      ],
-      "title": "Xizmatlar xaritasi (Node Graph)",
-      "type": "nodeGraph"
-    },
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
-      "id": 101,
-      "panels": [],
-      "title": "Xizmat bo'yicha kechikish (Service Latency)",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "fieldConfig": {
-        "defaults": {
-          "color": { "mode": "palette-classic" },
-          "unit": "ms"
-        },
-        "overrides": []
-      },
-      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 14 },
-      "id": 21,
-      "options": {
-        "legend": { "displayMode": "list", "placement": "bottom" },
-        "tooltip": { "mode": "multi" }
-      },
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 100,
-          "query": "{} | select(duration, resource.service.name)",
-          "queryType": "traceql",
-          "refId": "A",
-          "tableType": "spans"
-        }
-      ],
-      "title": "Xizmat bo'yicha span davomiyligi",
-      "type": "timeseries"
-    },
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 22 },
-      "id": 102,
-      "panels": [],
-      "title": "Tracelar",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "fieldConfig": {
-        "defaults": {
-          "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "Duration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          }
-        ]
-      },
-      "gridPos": { "h": 10, "w": 8, "x": 0, "y": 23 },
-      "id": 8,
-      "options": {
-        "cellHeight": "sm",
-        "footer": { "show": false },
-        "showHeader": true,
-        "sortBy": [{ "desc": true, "displayName": "Start time" }]
-      },
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 15,
-          "query": "{status=error}",
-          "queryType": "traceqlSearch",
-          "refId": "A",
-          "tableType": "traces"
-        }
-      ],
-      "title": "Xato tracelar",
-      "type": "table"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "fieldConfig": {
-        "defaults": {
-          "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "Duration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "yellow", "value": null },
-                    { "color": "orange", "value": 1000 },
-                    { "color": "red", "value": 3000 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          }
-        ]
-      },
-      "gridPos": { "h": 10, "w": 8, "x": 8, "y": 23 },
-      "id": 9,
-      "options": {
-        "cellHeight": "sm",
-        "footer": { "show": false },
-        "showHeader": true,
-        "sortBy": [{ "desc": true, "displayName": "Duration" }]
-      },
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 15,
-          "query": "{duration>1s}",
-          "queryType": "traceqlSearch",
-          "refId": "A",
-          "tableType": "traces"
-        }
-      ],
-      "title": "Sekin tracelar (>1s)",
-      "type": "table"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "fieldConfig": {
-        "defaults": {
-          "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "Duration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          }
-        ]
-      },
-      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 23 },
-      "id": 6,
-      "options": {
-        "cellHeight": "sm",
-        "footer": { "show": false },
-        "showHeader": true,
-        "sortBy": [{ "desc": true, "displayName": "Start time" }]
-      },
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 15,
-          "query": "{}",
-          "queryType": "traceqlSearch",
-          "refId": "A",
-          "tableType": "traces"
-        }
-      ],
-      "title": "So'nggi tracelar",
-      "type": "table"
-    }
-  ],
-  "refresh": "10s",
-  "schemaVersion": 39,
-  "tags": ["lab", "tempo", "traces"],
-  "time": { "from": "now-1h", "to": "now" },
-  "timepicker": {},
-  "timezone": "browser",
-  "title": "Lab Monitoring",
-  "uid": "lab-overview",
-  "version": 1
-}
+services:
+
+  # ── DATABASE ────────────────────────────────────────────
+  mongo:
+    image: mongo:7
+    container_name: mongo
+    networks:
+      - lab-net
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_BASICAUTH=false
+    networks:
+      - lab-net
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # ── CUSTOM SERVICES ─────────────────────────────────────
+  backend:
+    build:
+      context: ./services/backend
+      dockerfile: Dockerfile
+    container_name: backend
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/products
+      - APP_NAME=backend
+      - STATS_URL=http://stats:3001
+      - OTEL_SERVICE_NAME=backend
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318   # HTTP port matches protocol below
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf                       # keeping your protocol choice
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_PROPAGATORS=tracecontext,baggage
+    networks:
+      - lab-net
+    depends_on:
+      mongo:
+        condition: service_healthy
+      stats:
+        condition: service_started
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3000/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 40s
+    restart: unless-stopped
+
+  stats:
+    build:
+      context: ./services/stats
+      dockerfile: Dockerfile
+    container_name: stats
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/products
+      - APP_NAME=stats
+      - OTEL_SERVICE_NAME=stats
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://host.docker.internal:4318   # HTTP port matches protocol
+      - OTEL_EXPORTER_OTLP_PROTOCOL=http/protobuf
+      - OTEL_TRACES_SAMPLER=parentbased_traceidratio
+      - OTEL_TRACES_SAMPLER_ARG=1.0
+      - OTEL_TRACES_EXPORTER=otlp
+      - OTEL_PROPAGATORS=tracecontext,baggage
+    networks:
+      - lab-net
+    depends_on:
+      mongo:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:3001/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+      start_period: 40s
+    restart: unless-stopped
+
+  # ── NGINX ────────────────────────────────────────────────
+  nginx:
+    build:
+      context: ./services
+      dockerfile: nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "8080:80"
+    networks:
+      - lab-net
+    depends_on:
+      backend:
+        condition: service_started
+    restart: unless-stopped
+
+  # ── OBSERVABILITY ────────────────────────────────────────
+  grafana:
+    image: grafana/grafana:11.4.0
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+      - GF_AUTH_DISABLE_LOGIN_FORM=false
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-changeme}
+      - GF_USERS_ALLOW_SIGN_UP=false
+      - GF_SECURITY_SECRET_KEY=${GRAFANA_SECRET_KEY:-change-this-secret}
+      - GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/dashboards/lab-overview.json
+    volumes:
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/etc/grafana/dashboards:ro
+      - grafana-data:/var/lib/grafana
+    networks:
+      - lab-net
+    restart: unless-stopped
+
+# ── NETWORK & VOLUMES ──────────────────────────────────────
+networks:
+  lab-net:
+    driver: bridge
+
+volumes:
+  mongo-data:
+  grafana-data:
