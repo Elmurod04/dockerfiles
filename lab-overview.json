@@ -32,6 +32,7 @@
       "title": "Umumiy holat (At a Glance)",
       "type": "row"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -53,16 +54,15 @@
       "options": {
         "colorMode": "value",
         "graphMode": "none",
-        "reduceOptions": { "calcs": ["count"] },
+        "reduceOptions": { "calcs": ["sum"] },
         "orientation": "auto",
         "textMode": "auto"
       },
       "targets": [
         {
           "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 100,
-          "query": "{}",
-          "queryType": "traceqlSearch",
+          "query": "{ } | count()",
+          "queryType": "traceql",
           "refId": "A",
           "tableType": "traces"
         }
@@ -70,6 +70,7 @@
       "title": "Jami tracelar (so'nggi 1h)",
       "type": "stat"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -93,16 +94,15 @@
       "options": {
         "colorMode": "value",
         "graphMode": "none",
-        "reduceOptions": { "calcs": ["count"] },
+        "reduceOptions": { "calcs": ["sum"] },
         "orientation": "auto",
         "textMode": "auto"
       },
       "targets": [
         {
           "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 100,
-          "query": "{status=error}",
-          "queryType": "traceqlSearch",
+          "query": "{ status = error } | count()",
+          "queryType": "traceql",
           "refId": "A",
           "tableType": "traces"
         }
@@ -110,6 +110,7 @@
       "title": "Xato tracelar soni",
       "type": "stat"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -133,16 +134,15 @@
       "options": {
         "colorMode": "value",
         "graphMode": "none",
-        "reduceOptions": { "calcs": ["count"] },
+        "reduceOptions": { "calcs": ["sum"] },
         "orientation": "auto",
         "textMode": "auto"
       },
       "targets": [
         {
           "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 100,
-          "query": "{duration>1s}",
-          "queryType": "traceqlSearch",
+          "query": "{ duration > 1s } | count()",
+          "queryType": "traceql",
           "refId": "A",
           "tableType": "traces"
         }
@@ -150,6 +150,7 @@
       "title": "Sekin tracelar soni (>1s)",
       "type": "stat"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -180,9 +181,8 @@
       "targets": [
         {
           "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 100,
-          "query": "{duration>1s}",
-          "queryType": "traceqlSearch",
+          "query": "{ duration > 1s } | max(duration)",
+          "queryType": "traceql",
           "refId": "A",
           "tableType": "traces"
         }
@@ -199,6 +199,7 @@
       "title": "Xizmat bo'yicha tahlil (Service Breakdown)",
       "type": "row"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -274,6 +275,7 @@
       "title": "Backend — so'nggi tracelar",
       "type": "table"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -353,11 +355,12 @@
     {
       "collapsed": false,
       "gridPos": { "h": 1, "w": 24, "x": 0, "y": 16 },
-      "id": 102,
+      "id": 103,
       "panels": [],
-      "title": "HTTP Route tahlili (Route Breakdown)",
+      "title": "MongoDB operatsiyalari (DB Breakdown)",
       "type": "row"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -384,8 +387,8 @@
                   "mode": "absolute",
                   "steps": [
                     { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
+                    { "color": "yellow", "value": 100 },
+                    { "color": "red", "value": 500 }
                   ]
                 }
               },
@@ -402,8 +405,8 @@
                   "mode": "absolute",
                   "steps": [
                     { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
+                    { "color": "yellow", "value": 100 },
+                    { "color": "red", "value": 500 }
                   ]
                 }
               },
@@ -413,165 +416,6 @@
         ]
       },
       "gridPos": { "h": 10, "w": 12, "x": 0, "y": 17 },
-      "id": 12,
-      "options": {
-        "cellHeight": "sm",
-        "footer": { "show": false },
-        "showHeader": true,
-        "sortBy": [{ "desc": true, "displayName": "Duration" }]
-      },
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 20,
-          "query": "{span.http.target!=\"\" && status=error}",
-          "queryType": "traceqlSearch",
-          "refId": "A",
-          "tableType": "traces"
-        }
-      ],
-      "title": "HTTP xato so'rovlar (route + status)",
-      "type": "table"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": { "type": "auto" },
-            "inspect": false
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "mappings": []
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "Duration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          },
-          {
-            "matcher": { "id": "byName", "options": "traceDuration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          }
-        ]
-      },
-      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 17 },
-      "id": 13,
-      "options": {
-        "cellHeight": "sm",
-        "footer": { "show": false },
-        "showHeader": true,
-        "sortBy": [{ "desc": true, "displayName": "Duration" }]
-      },
-      "targets": [
-        {
-          "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 20,
-          "query": "{duration>500ms && span.http.target!=\"\"}",
-          "queryType": "traceqlSearch",
-          "refId": "A",
-          "tableType": "traces"
-        }
-      ],
-      "title": "HTTP sekin so'rovlar (>500ms, route bo'yicha)",
-      "type": "table"
-    },
-
-    {
-      "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
-      "id": 103,
-      "panels": [],
-      "title": "MongoDB operatsiyalari (DB Breakdown)",
-      "type": "row"
-    },
-    {
-      "datasource": { "type": "tempo", "uid": "tempo" },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": { "type": "auto" },
-            "inspect": false
-          },
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [{ "color": "green", "value": null }]
-          },
-          "mappings": []
-        },
-        "overrides": [
-          {
-            "matcher": { "id": "byName", "options": "Duration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 100 },
-                    { "color": "red", "value": 500 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          },
-          {
-            "matcher": { "id": "byName", "options": "traceDuration" },
-            "properties": [
-              { "id": "unit", "value": "ms" },
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
-                    { "color": "green", "value": null },
-                    { "color": "yellow", "value": 100 },
-                    { "color": "red", "value": 500 }
-                  ]
-                }
-              },
-              { "id": "custom.cellOptions", "value": { "type": "color-background" } }
-            ]
-          }
-        ]
-      },
-      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 28 },
       "id": 14,
       "options": {
         "cellHeight": "sm",
@@ -592,6 +436,7 @@
       "title": "MongoDB — barcha DB spanlar",
       "type": "table"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -646,7 +491,7 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 28 },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 17 },
       "id": 15,
       "options": {
         "cellHeight": "sm",
@@ -670,12 +515,13 @@
 
     {
       "collapsed": false,
-      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 38 },
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 27 },
       "id": 104,
       "panels": [],
       "title": "Tracelar (Trace Tables)",
       "type": "row"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -702,8 +548,7 @@
                   "mode": "absolute",
                   "steps": [
                     { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
+                    { "color": "red", "value": 1 }
                   ]
                 }
               },
@@ -720,8 +565,7 @@
                   "mode": "absolute",
                   "steps": [
                     { "color": "green", "value": null },
-                    { "color": "yellow", "value": 1000 },
-                    { "color": "red", "value": 3000 }
+                    { "color": "red", "value": 1 }
                   ]
                 }
               },
@@ -730,7 +574,7 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 8, "x": 0, "y": 39 },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 28 },
       "id": 20,
       "options": {
         "cellHeight": "sm",
@@ -751,6 +595,7 @@
       "title": "Xato tracelar",
       "type": "table"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -777,8 +622,8 @@
                   "mode": "absolute",
                   "steps": [
                     { "color": "yellow", "value": null },
-                    { "color": "orange", "value": 1000 },
-                    { "color": "red", "value": 3000 }
+                    { "color": "orange", "value": 3000 },
+                    { "color": "red", "value": 5000 }
                   ]
                 }
               },
@@ -795,8 +640,8 @@
                   "mode": "absolute",
                   "steps": [
                     { "color": "yellow", "value": null },
-                    { "color": "orange", "value": 1000 },
-                    { "color": "red", "value": 3000 }
+                    { "color": "orange", "value": 3000 },
+                    { "color": "red", "value": 5000 }
                   ]
                 }
               },
@@ -805,7 +650,7 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 8, "x": 8, "y": 39 },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 28 },
       "id": 21,
       "options": {
         "cellHeight": "sm",
@@ -817,15 +662,16 @@
         {
           "datasource": { "type": "tempo", "uid": "tempo" },
           "limit": 15,
-          "query": "{duration>1s}",
+          "query": "{duration>2s}",
           "queryType": "traceqlSearch",
           "refId": "A",
           "tableType": "traces"
         }
       ],
-      "title": "Sekin tracelar (>1s)",
+      "title": "Sekin tracelar (>2s)",
       "type": "table"
     },
+
     {
       "datasource": { "type": "tempo", "uid": "tempo" },
       "fieldConfig": {
@@ -880,25 +726,25 @@
           }
         ]
       },
-      "gridPos": { "h": 10, "w": 8, "x": 16, "y": 39 },
-      "id": 22,
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 38 },
+      "id": 23,
       "options": {
         "cellHeight": "sm",
         "footer": { "show": false },
         "showHeader": true,
-        "sortBy": [{ "desc": true, "displayName": "Start time" }]
+        "sortBy": [{ "desc": true, "displayName": "Duration" }]
       },
       "targets": [
         {
           "datasource": { "type": "tempo", "uid": "tempo" },
-          "limit": 15,
-          "query": "{}",
+          "limit": 20,
+          "query": "{nestedSetSpanCount > 3}",
           "queryType": "traceqlSearch",
           "refId": "A",
           "tableType": "traces"
         }
       ],
-      "title": "So'nggi tracelar",
+      "title": "Ko'p spanli tracelar (span soni > 3)",
       "type": "table"
     }
 
